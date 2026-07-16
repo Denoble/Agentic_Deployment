@@ -13,9 +13,10 @@ class CustomOpenRouterEmbeddings(Embeddings):
     A custom wrapper that hits OpenRouter's embeddings endpoint natively,
     preventing OpenAI schema validation errors.
     """
+    
     def __init__(self, model: str, api_key: str):
         self.model = model
-        self.api_key = api_key
+        self.api_key = api_key 
         self.url = "https://openrouter.ai/api/v1/embeddings"
         self.headers = {
             "Authorization": f"Bearer {self.api_key}",

@@ -97,7 +97,7 @@ def amazon_product_search(query: str):
         name="amazon_search",
         description="Search for information about Amazon products."
     )
-
+ 
     # Execute search based on query
     return retriever_tool.invoke(query)
 
