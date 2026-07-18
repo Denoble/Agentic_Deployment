@@ -39,7 +39,6 @@ load_dotenv(env_path)
 
 ## Set the OpenAI API key and model name
 Open_API_Key = os.getenv('OPENAI_API_KEY')
-os.environ["OPENAI_API_KEY"] = Open_API_Key
 TAVILY_API_KEY = os.getenv('TAVILY_API_KEY')
 OPEN_ROUTER_API_KEY = os.getenv('OPEN_ROUTER_KEY')
 LANGSMITH_API_KEY = os.getenv('LANGSMITH_API_KEY')
