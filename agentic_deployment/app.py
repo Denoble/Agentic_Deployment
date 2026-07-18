@@ -57,7 +57,7 @@ os.environ["TAVILY_API_KEY"] = os.getenv("TAVILY_API_KEY")
 ## Load the vectorstore
 embeddings = OpenAIEmbeddings()
 vector = FAISS.load_local(
-    "./Deployment/faiss_index", embeddings, allow_dangerous_deserialization=True
+    "Deployment/faiss_index", embeddings, allow_dangerous_deserialization=True
 )
 
 
