@@ -29,6 +29,9 @@ from langchain_openai import OpenAI
 from dotenv import load_dotenv
 import os
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+INDEX_PATH = os.path.join(BASE_DIR, "Deployment", "faiss_index")
+
 # Load environment variables from .env file
 
 dotenv_dir='../chat_bot/prod_small/' #Replace with your path
@@ -57,7 +60,7 @@ os.environ["TAVILY_API_KEY"] = os.getenv("TAVILY_API_KEY")
 ## Load the vectorstore
 embeddings = OpenAIEmbeddings()
 vector = FAISS.load_local(
-    "Deployment/faiss_index", embeddings, allow_dangerous_deserialization=True
+    INDEX_PATH, embeddings, allow_dangerous_deserialization=True
 )
 
 
