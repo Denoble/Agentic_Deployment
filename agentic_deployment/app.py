@@ -50,7 +50,7 @@ client = OpenAI(
     openai_api_key=OPEN_ROUTER_API_KEY,
     model=MODEL
 )
-print(OPEN_ROUTER_API_KEY[0:70]+'...')
+#print(OPEN_ROUTER_API_KEY[0:70]+'...')
 ## Set the Tavily API key
 os.environ["TAVILY_API_KEY"] = os.getenv("TAVILY_API_KEY")
 
