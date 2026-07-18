@@ -1,5 +1,6 @@
 # Necessary Imports
 import csv
+from langsmith import Client
 import pandas as pd
 import math
 import numpy as np
@@ -40,13 +41,17 @@ load_dotenv(env_path)
 Open_API_Key = os.getenv('OPENAI_API_KEY')
 os.environ["OPENAI_API_KEY"] = Open_API_Key
 TAVILY_API_KEY = os.getenv('TAVILY_API_KEY')
-OPENROUTER_API_KEY = os.getenv('OPEN_ROUTER_KEY')
+OPEN_ROUTER_API_KEY = os.getenv('OPEN_ROUTER_KEY')
 LANGSMITH_API_KEY = os.getenv('LANGSMITH_API_KEY')
-os.environ["OPEN_ROUTER_KEY"] = OPENROUTER_API_KEY
-os.environ["LANGCHAIN_API_KEY"] = LangSMITH_API_KEY
-MODEL="gpt-4o-mini"
-client = OpenAI(api_key=Open_API_Key)
-print(OPENROUTER_API_KEY[0:70]+'...')
+
+MODEL= "openai/gpt-oss-20b:free"
+#client = OpenAI(api_key=Open_API_Key)
+client = OpenAI(
+    openai_api_base="https://openrouter.ai/api/v1",
+    openai_api_key=OPEN_ROUTER_API_KEY,
+    model=MODEL
+)
+print(OPEN_ROUTER_API_KEY[0:70]+'...')
 ## Set the Tavily API key
 os.environ["TAVILY_API_KEY"] = os.getenv("TAVILY_API_KEY")
 
@@ -59,7 +64,13 @@ vector = FAISS.load_local(
 
 ## Create the conversational agent
 
-llm = ChatOpenAI(api_key=os.environ["OPENAI_API_KEY"], temperature=0)
+#llm = ChatOpenAI(api_key=os.environ["OPENAI_API_KEY"], temperature=0)
+llm = ChatOpenAI(
+    openai_api_base="https://openrouter.ai/api/v1",
+    openai_api_key=OPEN_ROUTER_API_KEY,
+    temperature=0,
+    model="openai/gpt-oss-20b:free", # Automatically dynamically routes to an open free model
+)
 
 # Create a prompt template that gives the model a persona of a customer
 # Create a chain for passing a list of Documents to a model.
@@ -128,12 +139,19 @@ def search_tavily(query: str):
 
 # hwchase17/react is a prompt template designed for ReAct-style
 # conversational agents.
-prompt = hub.pull("hwchase17/react")
+client_lang_smith = Client(api_key=LANGSMITH_API_KEY)
+prompt = client_lang_smith.pull_prompt("hwchase17/react",dangerously_pull_public_prompt=True)
 
 ## Create a list of tools: retriever_tool and search_tool
 tools = [search_tavily, amazon_product_search]
 
-llm = ChatOpenAI(model = 'gpt-4o-mini', temperature = 0)
+#llm = ChatOpenAI(model = 'gpt-4o-mini', temperature = 0)
+llm = ChatOpenAI(
+    openai_api_base="https://openrouter.ai/api/v1",
+    openai_api_key=OPEN_ROUTER_API_KEY,
+    temperature=0,
+    model="openai/gpt-oss-20b:free", # Automatically dynamically routes to an open free model
+)
 
 react_agent = create_react_agent(
     llm=llm,  # The OpenAI model responsible for reasoning and response generation.
@@ -160,7 +178,13 @@ summary_memory = ConversationSummaryMemory(llm=llm, memory_key="chat_history")
 
 # Initialize OpenAI model with streaming enabled
 # Streaming allows tokens to be processed in real-time, reducing response latency.
-summary_llm = ChatOpenAI(model='gpt-4o-mini', temperature=0, streaming=True)
+summary_llm = ChatOpenAI(
+    openai_api_base="https://openrouter.ai/api/v1",
+    openai_api_key=OPEN_ROUTER_API_KEY,
+    temperature=0,
+    model="openai/gpt-oss-20b:free",
+    streaming=True
+)
 
 # Create a ReAct agent
 # The agent will reason and take actions based on retrieved tools and memory.
