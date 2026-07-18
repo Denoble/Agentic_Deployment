@@ -44,7 +44,7 @@ TAVILY_API_KEY = os.getenv('TAVILY_API_KEY')
 OPEN_ROUTER_API_KEY = os.getenv('OPEN_ROUTER_KEY')
 LANGSMITH_API_KEY = os.getenv('LANGSMITH_API_KEY')
 
-MODEL= "openai/gpt-oss-20b:free"
+MODEL= "nvidia/nemotron-3-ultra-550b-a55b:free"
 #client = OpenAI(api_key=Open_API_Key)
 client = OpenAI(
     openai_api_base="https://openrouter.ai/api/v1",
@@ -69,7 +69,7 @@ llm = ChatOpenAI(
     openai_api_base="https://openrouter.ai/api/v1",
     openai_api_key=OPEN_ROUTER_API_KEY,
     temperature=0,
-    model="openai/gpt-oss-20b:free", # Automatically dynamically routes to an open free model
+    model="nvidia/nemotron-3-ultra-550b-a55b:free", # Automatically dynamically routes to an open free model
 )
 
 # Create a prompt template that gives the model a persona of a customer
@@ -150,7 +150,7 @@ llm = ChatOpenAI(
     openai_api_base="https://openrouter.ai/api/v1",
     openai_api_key=OPEN_ROUTER_API_KEY,
     temperature=0,
-    model="openai/gpt-oss-20b:free", # Automatically dynamically routes to an open free model
+    model="nvidia/nemotron-3-ultra-550b-a55b:free", # Automatically dynamically routes to an open free model
 )
 
 react_agent = create_react_agent(
@@ -182,7 +182,7 @@ summary_llm = ChatOpenAI(
     openai_api_base="https://openrouter.ai/api/v1",
     openai_api_key=OPEN_ROUTER_API_KEY,
     temperature=0,
-    model="openai/gpt-oss-20b:free",
+    model="nvidia/nemotron-3-ultra-550b-a55b:free",
     streaming=True
 )
 
